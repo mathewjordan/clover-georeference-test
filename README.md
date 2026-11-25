@@ -1,19 +1,22 @@
 # Clover georeference test
 
-A live example of [Clover](https://clover.iiif.library.northwestern.edu)'s `<clover-viewer>` web component showing a place on a map from an annotation added beside an Understory Manifest of Hokusai's _The Great Wave off Kanagawa_.
+A live example of [Clover](https://clover.iiif.library.northwestern.edu)'s `<clover-viewer>` web component opening an AnnotationPage as its content: a georeference that lays Hokusai's _The Great Wave off Kanagawa_ (an Understory Manifest) over Edo Bay, and a GeoJSON point on Mount Fuji.
 
 - Page: [`index.html`](index.html), live at https://mathewjordan.github.io/clover-georeference-test/
-- Annotations: [`assets/annotations/test-annotations.json`](assets/annotations/test-annotations.json), an AnnotationPage that tags Mount Fuji's region of the print with a GeoJSON point at its summit (IIIF Cookbook recipe 0139)
+- Annotations: [`assets/annotations/test-annotations.json`](assets/annotations/test-annotations.json), an AnnotationPage of two:
+  - "View from Edo Bay", a `georeferencing` annotation on the whole Canvas, its four corners pinned to the bay off Kanagawa (Yokohama)
+  - "Mount Fuji", the mountain's region tagged with a GeoJSON point at its summit (IIIF Cookbook recipe 0139)
+
+Each annotation names its Manifest in `partOf`, so Clover opens it. A `georeferencing` annotation given through the `annotations` attribute beside a Manifest is left out (Clover 4.12.3), so the AnnotationPage is the `iiif-content`, by its full address.
 
 ```html
 <script src="https://cdn.jsdelivr.net/npm/@nulib/clover/dist/web-components/index.umd.js"></script>
 
 <clover-viewer
-  iiif-content="https://iiif-understory.dc.library.northwestern.edu/published/presentation/manifest/12e964fd-532c-4c17-8f09-da8ec9d3bbe1/manifest.json"
+  iiif-content="https://mathewjordan.github.io/clover-georeference-test/assets/annotations/test-annotations.json"
   template="default"
   items="grid"
   header="false"
-  annotations="assets/annotations/test-annotations.json"
 >
 </clover-viewer>
 ```
