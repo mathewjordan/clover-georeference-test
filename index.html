@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Clover georeference test</title>
+    <script src="https://cdn.jsdelivr.net/npm/@nulib/clover/dist/web-components/index.umd.js"></script>
+    <style>
+      body {
+        margin: 0 auto;
+        max-width: 72rem;
+        padding: 1rem;
+        font-family: system-ui, sans-serif;
+        line-height: 1.5;
+        background: #fff;
+        color: #111;
+      }
+      code {
+        font-family: ui-monospace, Menlo, Consolas, monospace;
+        font-size: 0.9em;
+      }
+      pre {
+        margin: 0;
+        padding: 1rem;
+        border: 1px solid #ccc;
+        border-radius: 0.5rem;
+        background: #f6f6f6;
+        white-space: pre-wrap;
+        overflow-wrap: anywhere;
+      }
+      pre code {
+        font-size: 1rem;
+      }
+      h2 {
+        margin-top: 2rem;
+        font-size: 1.25rem;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>Clover georeference test</h1>
+      <p>
+        Katsushika Hokusai's <cite>The Great Wave off Kanagawa</cite>, the
+        Minneapolis Institute of Art's impression as published on Understory,
+        with an AnnotationPage added through the Viewer's
+        <code>annotations</code> attribute:
+        <a href="assets/annotations/test-annotations.json"><code>assets/annotations/test-annotations.json</code></a>.
+        It holds one annotation: Mount Fuji, a region of the print tagged with
+        a GeoJSON point at the mountain's summit (IIIF Cookbook recipe 0139).
+        Open it from the Annotations button on the image or from Annotations in
+        the panel.
+      </p>
+      <p>
+        <a href="https://github.com/mathewjordan/clover-georeference-test">View this example on GitHub</a>.
+      </p>
+      <clover-viewer
+        iiif-content="https://iiif-understory.dc.library.northwestern.edu/published/presentation/manifest/12e964fd-532c-4c17-8f09-da8ec9d3bbe1/manifest.json"
+        template="default"
+        items="grid"
+        header="false"
+        annotations="assets/annotations/test-annotations.json"
+      >
+      </clover-viewer>
+      <h2>Code</h2>
+      <pre><code>&lt;script src="https://cdn.jsdelivr.net/npm/@nulib/clover/dist/web-components/index.umd.js"&gt;&lt;/script&gt;
+
+&lt;clover-viewer
+  iiif-content="https://iiif-understory.dc.library.northwestern.edu/published/presentation/manifest/12e964fd-532c-4c17-8f09-da8ec9d3bbe1/manifest.json"
+  template="default"
+  items="grid"
+  header="false"
+  annotations="assets/annotations/test-annotations.json"
+&gt;
+&lt;/clover-viewer&gt;</code></pre>
+      <h2>The annotation</h2>
+      <pre><code>{
+  "id": "…/test-annotations.json/mount-fuji",
+  "type": "Annotation",
+  "motivation": "tagging",
+  "body": {
+    "type": "Feature",
+    "properties": { "label": { "en": ["Mount Fuji"] } },
+    "geometry": { "type": "Point", "coordinates": [138.7274, 35.3606] }
+  },
+  "target": {
+    "type": "SpecificResource",
+    "source": {
+      "id": "https://iiif-understory.dc.library.northwestern.edu/published/presentation/manifest/12e964fd-532c-4c17-8f09-da8ec9d3bbe1/canvas/0",
+      "type": "Canvas",
+      "partOf": [{ "id": "https://iiif-understory.dc.library.northwestern.edu/published/presentation/manifest/12e964fd-532c-4c17-8f09-da8ec9d3bbe1/manifest.json", "type": "Manifest" }]
+    },
+    "selector": {
+      "type": "FragmentSelector",
+      "conformsTo": "http://www.w3.org/TR/media-frags/",
+      "value": "xywh=5520,4140,1080,540"
+    }
+  }
+}</code></pre>
+      <h2>Steps</h2>
+      <ol>
+        <li>Load Clover's script in the page's <code>&lt;head&gt;</code>.</li>
+        <li>
+          Write an AnnotationPage whose annotation targets a region of the
+          Canvas and whose body is a GeoJSON <code>Feature</code> with a
+          <code>Point</code>, and save it beside the page.
+        </li>
+        <li>
+          Give the Viewer the Manifest as <code>iiif-content</code> and the file
+          as <code>annotations</code>.
+        </li>
+      </ol>
+      <h2>Gotchas</h2>
+      <ul>
+        <li>
+          GeoJSON writes a point as longitude, then latitude:
+          <code>[138.7274, 35.3606]</code>, never the other way around.
+        </li>
+        <li>
+          The region is in the Canvas's own pixels, 9568 × 6583 here, never
+          those of a smaller copy of its image.
+        </li>
+        <li>
+          The annotation must target the Canvas by its exact <code>id</code>.
+          Naming its Manifest in <code>partOf</code> lets the AnnotationPage be
+          opened as <code>iiif-content</code> on its own, too.
+        </li>
+        <li>
+          This is a point tagging a place (<code>tagging</code>), not a
+          georeference that lays the image on a map
+          (<code>georeferencing</code>), which needs control points and suits
+          a map rather than a print.
+        </li>
+        <li>
+          A relative path resolves against the page's address, not the site's
+          root. On a GitHub Pages project site, <code>../../assets/…</code> from
+          the homepage leaves the repository's folder and fails to load.
+        </li>
+      </ul>
+    </main>
+  </body>
+</html>
