@@ -1,0 +1,41 @@
+{
+  "@context": "http://iiif.io/api/presentation/3/context.json",
+  "id": "https://mathewjordan.github.io/clover-georeference-test/assets/annotations/test-annotations.json",
+  "type": "AnnotationPage",
+  "items": [
+    {
+      "id": "https://mathewjordan.github.io/clover-georeference-test/assets/annotations/test-annotations.json/mount-fuji",
+      "type": "Annotation",
+      "motivation": "tagging",
+      "body": {
+        "id": "https://mathewjordan.github.io/clover-georeference-test/assets/annotations/test-annotations.json/mount-fuji/feature",
+        "type": "Feature",
+        "properties": {
+          "label": { "en": ["Mount Fuji"] }
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [138.7274, 35.3606]
+        }
+      },
+      "target": {
+        "type": "SpecificResource",
+        "source": {
+          "id": "https://iiif-understory.dc.library.northwestern.edu/published/presentation/manifest/12e964fd-532c-4c17-8f09-da8ec9d3bbe1/canvas/0",
+          "type": "Canvas",
+          "partOf": [
+            {
+              "id": "https://iiif-understory.dc.library.northwestern.edu/published/presentation/manifest/12e964fd-532c-4c17-8f09-da8ec9d3bbe1/manifest.json",
+              "type": "Manifest"
+            }
+          ]
+        },
+        "selector": {
+          "type": "FragmentSelector",
+          "conformsTo": "http://www.w3.org/TR/media-frags/",
+          "value": "xywh=5520,4140,1080,540"
+        }
+      }
+    }
+  ]
+}
