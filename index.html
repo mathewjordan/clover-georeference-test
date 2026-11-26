@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Clover georeference test</title>
-    <script src="https://cdn.jsdelivr.net/npm/@nulib/clover/dist/web-components/index.umd.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@nulib/clover@4.12.5/dist/web-components/index.umd.js"></script>
     <style>
       body {
         margin: 0 auto;
@@ -43,17 +43,17 @@
       <p>
         Katsushika Hokusai's <cite>The Great Wave off Kanagawa</cite>, the
         Minneapolis Institute of Art's impression as published on Understory,
-        opened through an AnnotationPage given as the Viewer's
-        <code>iiif-content</code>:
+        opened from its Manifest with an AnnotationPage sideloaded through the
+        Viewer's <code>annotations</code>:
         <a href="assets/annotations/test-annotations.json"><code>assets/annotations/test-annotations.json</code></a>.
-        Each annotation names the Manifest it belongs to, so Clover opens that
-        Manifest with them. The page holds two:
+        Clover lays each annotation on the Canvas it targets, as if the
+        Manifest held it. The page holds two:
       </p>
       <ul>
         <li>
           <strong>View from Edo Bay</strong>, a georeference that lays the whole
-          print over the bay off Kanagawa, today's Tokyo Bay off Yokohama. The
-          Viewer opens on the map with the print in place.
+          print over the bay off Kanagawa, today's Tokyo Bay off Yokohama.
+          Pressing it in Annotations opens the map with the print in place.
         </li>
         <li>
           <strong>Mount Fuji</strong>, the mountain's region of the print tagged
@@ -65,17 +65,19 @@
         <a href="https://github.com/mathewjordan/clover-georeference-test">View this example on GitHub</a>.
       </p>
       <clover-viewer
-        iiif-content="https://mathewjordan.github.io/clover-georeference-test/assets/annotations/test-annotations.json"
+        iiif-content="https://iiif-understory.dc.library.northwestern.edu/published/presentation/manifest/12e964fd-532c-4c17-8f09-da8ec9d3bbe1/manifest.json"
+        annotations="assets/annotations/test-annotations.json"
         template="default"
         items="grid"
         header="false"
       >
       </clover-viewer>
       <h2>Code</h2>
-      <pre><code>&lt;script src="https://cdn.jsdelivr.net/npm/@nulib/clover/dist/web-components/index.umd.js"&gt;&lt;/script&gt;
+      <pre><code>&lt;script src="https://cdn.jsdelivr.net/npm/@nulib/clover@4.12.5/dist/web-components/index.umd.js"&gt;&lt;/script&gt;
 
 &lt;clover-viewer
-  iiif-content="https://mathewjordan.github.io/clover-georeference-test/assets/annotations/test-annotations.json"
+  iiif-content="https://iiif-understory.dc.library.northwestern.edu/published/presentation/manifest/12e964fd-532c-4c17-8f09-da8ec9d3bbe1/manifest.json"
+  annotations="assets/annotations/test-annotations.json"
   template="default"
   items="grid"
   header="false"
@@ -142,33 +144,37 @@
 }</code></pre>
       <h2>Steps</h2>
       <ol>
-        <li>Load Clover's script in the page's <code>&lt;head&gt;</code>.</li>
         <li>
-          Write an AnnotationPage whose annotations target the Canvas and name
-          its Manifest in <code>partOf</code>, and publish it.
+          Load Clover's script, 4.12.5 or later, in the page's
+          <code>&lt;head&gt;</code>.
         </li>
         <li>
-          Give the Viewer the AnnotationPage's full address as
-          <code>iiif-content</code>.
+          Write an AnnotationPage whose annotations target the Manifest's
+          Canvas, and publish it beside the page.
+        </li>
+        <li>
+          Give the Viewer the Manifest as <code>iiif-content</code> and the
+          AnnotationPage as <code>annotations</code>.
         </li>
       </ol>
       <h2>Gotchas</h2>
       <ul>
         <li>
-          A <code>georeferencing</code> annotation is read only from the
-          content, or from the Manifest's own annotation pages. Given through
-          the Viewer's <code>annotations</code> attribute beside a Manifest, it
-          is left out (Clover 4.12.3), though a <code>tagging</code> point there
-          still shows.
+          A <code>georeferencing</code> annotation given through
+          <code>annotations</code> is laid on its Canvas from Clover 4.12.5;
+          earlier releases left it out. The script is pinned to that release, as
+          an address without a version can serve an older one for days.
         </li>
         <li>
           <code>iiif-content</code> takes a full address. A relative path such
           as <code>assets/…</code> fails with "Unreadable iiifContent", although
-          the <code>annotations</code> attribute accepts one.
+          <code>annotations</code> accepts one, as here.
         </li>
         <li>
-          Each annotation needs its Manifest in <code>partOf</code>, or Clover
-          has no Manifest to open.
+          An annotation lies on the Canvas its target names by id, so the id
+          must be the Manifest's own. Each also names its Manifest in
+          <code>partOf</code>, so the AnnotationPage still opens on its own as
+          <code>iiif-content</code>.
         </li>
         <li>
           GeoJSON writes a point as longitude, then latitude:
